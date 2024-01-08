@@ -8,6 +8,9 @@ import Navbar from "./components/Navbar";
 import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
+import Login from "./Login";
+import Admin from "./Admin";
+import Writepage from "./Writepage";
 
 
 const queryClient = new QueryClient({
@@ -32,10 +35,13 @@ const App = () =>{
                 <QueryClientProvider client={queryClient} >
                     <Navbar />
                     <Routes>
+                        <Route path="/login" element={<Login />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/contact" element={<Contact />} />
+                        <Route path="/admin" element={<Admin />} />
+                        <Route path="/writepage" element={<Writepage />} />
                         <Route path="/" element={<Home />} />
-                     
+                      
                     </Routes>
                 </QueryClientProvider>
             </BrowserRouter>
