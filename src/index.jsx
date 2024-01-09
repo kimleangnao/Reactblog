@@ -11,6 +11,7 @@ import Contact from "./Contact";
 import Login from "./Login";
 import Admin from "./Admin";
 import Writepage from "./Writepage";
+import DisplayArticle from "./DisplayArticle";
 
 
 const queryClient = new QueryClient({
@@ -40,6 +41,7 @@ const App = () =>{
                         <Route path="/contact" element={<Contact />} />
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/writepage" element={<Writepage />} />
+                        <Route path="/article/:id" element={<DisplayArticle />} />
                         <Route path="/" element={<Home />} />
                       
                     </Routes>
