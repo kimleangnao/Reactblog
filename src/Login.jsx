@@ -1,7 +1,26 @@
 
+import { useEffect } from "react";
 import bar from "./resources/about_bar.png"
 
+
+
 const Login = () => {
+
+
+    useEffect(() => {
+
+        let windowScroll = setTimeout(() => {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth',
+            });
+        }, 1000)
+
+        return () => clearInterval(windowScroll);
+     
+    }, [])
+
+
     return(
         <div className="login">
             <div className="login_bar">
@@ -10,7 +29,7 @@ const Login = () => {
             <h1 className="login_message">Welcome back,</h1>
             <div className="login_name">Kimleang Nao</div>
 
-            <form action="#" className="login_form">
+            <form action="#" id="goHere" className="login_form">
                 <div className="login_form_inputs">
                     <div className="login_form_inputs_row">
                         <div className="login_form_inputs_row_title">
@@ -31,7 +50,7 @@ const Login = () => {
                 </div>
             
                 <div className="login_form_button">
-                    <div role="button" className="login_form_button_login">
+                    <div  role="button" className="login_form_button_login">
                         LOGIN
                     </div>
                 </div>

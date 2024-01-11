@@ -1,15 +1,96 @@
 
+import { useState } from "react";
 import bar from "./resources/about_bar.png"
+import WriteParagraph from "./components/WriteParagraph";
+import WriteUpload from "./components/WriteUpload";
+import WriteMakeList from "./components/WriteMakeList";
+import WriteCode from "./components/WriteCode";
+
+
+
 
 const Writepage =  () => {
 
+    // <span className="Bold"> , </span> 
+    // <span className="italic"> , </span> 
+    // <span className="underline"> , </span> 
+    // <span className="strikethrough"> , </span> 
 
 
-const functionExample = 
-`function plus(n1, n2){
-       
-    return n1+n2
-}`;
+    const [blog, setblog] = useState({
+        id: Math.random() * 1000000,
+        date: new Date(),
+        publishStatus: false,
+        inSaveDraft: false,
+        title: "",
+        content: []
+    });
+
+
+    const writeTitle = (e) => {
+        e.preventDefault();
+        console.log(blog)
+
+        let copyBlog = {...blog};
+        copyBlog.title = e.target.value;
+
+        setblog(copyBlog);
+    }
+
+    const createParagraph = (e) => {
+        e.preventDefault();
+
+        let newPar = {
+            id: Math.random() * 1000000,
+            text: "",
+            type: "paragraph"
+        }
+
+        let copyBlog = {...blog};
+        copyBlog.content.push(newPar)
+        setblog(copyBlog);
+    }
+
+    const createList = (e) => {
+        e.preventDefault();
+
+        let newList = {
+            id: Math.random() * 1000000,
+            text: "",
+            type: "list"
+        }
+        let copyBlog = {...blog};
+        copyBlog.content.push(newList)
+        setblog(copyBlog);
+    }
+
+    const createCodeBlock = (e) => {
+        e.preventDefault();
+
+        let newCodeblock = {
+            id: Math.random() * 1000000,
+            text: ``,
+            type: "codeblock"
+        }
+
+        let copyBlog = {...blog};
+        copyBlog.content.push(newCodeblock);
+        setblog(copyBlog);
+    }
+
+    const createImage = (e) => {
+        e.preventDefault();
+
+        let newImage = {
+            id: Math.random() * 1000000,
+            text: "",
+            type: "image"
+        }
+        let copyBlog = {...blog};
+        copyBlog.content.push(newImage);
+        setblog(copyBlog);
+    }
+
 
 
 
@@ -36,19 +117,19 @@ const functionExample =
                     <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_crossout">
                         S
                     </div>
-                    <div className="writepage_wrapper_tools_box">
+                    <div role="button" tabIndex={0} onKeyDown={(e) => createParagraph(e)}  onClick={(e) => createParagraph(e)} className="writepage_wrapper_tools_box">
                         Par
                     </div>
-                    <div className="writepage_wrapper_tools_box">
+                    <div role="button" tabIndex={0} onKeyDown={(e) => createList(e)} onClick={(e) => createList(e)} className="writepage_wrapper_tools_box">
                         List
                     </div>
                     <div className="writepage_wrapper_tools_box">
                         HL
                     </div>
-                    <div className="writepage_wrapper_tools_box">
+                    <div role="button" tabIndex={0} onKeyDown={(e) => createCodeBlock(e)} onClick={(e) => createCodeBlock(e)}  className="writepage_wrapper_tools_box">
                         C
                     </div>
-                    <div className="writepage_wrapper_tools_box">
+                    <div role="button" tabIndex={0} onKeyDown={(e) => createImage(e)} onClick={(e) => createImage(e)} className="writepage_wrapper_tools_box">
                         Img
                     </div>
                 </div>
@@ -57,73 +138,26 @@ const functionExample =
                     <div className="writepage_wrapper_title_text">
                         Title
                     </div>
-                    <input type="text" name="title" placeholder="Write title here..." className="writepage_wrapper_title_input" />
-                </div>
-              
-                <div className="writepage_wrapper_paragraph">
-                    <textarea placeholder="Enter text here..." className="writepage_wrapper_paragraph_text" >
-
-                    </textarea>
-                    <div className="writepage_wrapper_paragraph_hold">
-                        <div className="writepage_wrapper_paragraph_hold_circle">
-                    
-                        </div>
-                        <div className="writepage_wrapper_paragraph_hold_circle">
-                    
-                        </div>
-                        <div className="writepage_wrapper_paragraph_hold_circle">
-                    
-                        </div>
-                    </div>
-                </div>
-                <div className="writepage_wrapper_upload">
-                    <div className="writepage_wrapper_upload_text" >
-                        <input type="file" id="image" name="image" className="writepage_wrapper_upload_text_input" />
-                    </div>
-                    <div className="writepage_wrapper_upload_hold">
-                        <div className="writepage_wrapper_upload_hold_circle">
-                    
-                        </div>                    
-                    </div>
+                    <input 
+                        type="text" 
+                        name="title" 
+                        placeholder="Write title here..." 
+                        className="writepage_wrapper_title_input"
+                        value={blog.title} 
+                        onChange={(e) => writeTitle(e)} 
+                    />
                 </div>
                 
-                <div className="writepage_wrapper_list">
-                    <div className="writepage_wrapper_list_text">
-                        <div  className="writepage_wrapper_list_text_input">
-                            <div  className="writepage_wrapper_list_text_input_order">
-                                1. 
-                            </div>
-                            <input type="text" className="writepage_wrapper_list_text_input_text" />
+                {
+                    blog.content.map((v, i) => (
+                        v.type === "paragraph" ? <WriteParagraph key={i} /> : 
+                        v.type == "list" ? <WriteMakeList key={i} /> : 
+                        v.type == "codeblock" ? <WriteCode key={i} /> : 
+                        v.type == "image" ? <WriteUpload key={i} /> : ""
+                    ))
+                }
 
-                        </div>
-                        <button className="writepage_wrapper_list_text_more">More</button>
-
-                 
-
-                    </div>
-                    <div className="writepage_wrapper_list_hold">
-                        <div className="writepage_wrapper_list_hold_circle">
-
-                        </div>
-                        <div className="writepage_wrapper_list_hold_circle">
-
-                        </div>
-                    </div>
-                </div>
-
-                <div className="writepage_wrapper_code">
-                    <div className="writepage_wrapper_code_text">
-                        <div className="writepage_wrapper_code_text_highlight">
-                           {functionExample}
-                        </div>
-                    </div>
-                    <div className="writepage_wrapper_code_hold">
-                        <div className="writepage_wrapper_code_hold_circle">
-
-                        </div>
-                    </div>
-                </div>
-
+              
 
                 <div className="writepage_wrapper_buttons">
                     <div className="writepage_wrapper_buttons_button">

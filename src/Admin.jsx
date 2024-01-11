@@ -4,8 +4,22 @@ import bar from "./resources/about_bar.png"
 import logoRed from "./resources/logo-red.png"
 import logoBlue from "./resources/logo-blue.png"
 import logoYellow from "./resources/logo-yellow.png"
+import { useState } from "react"
+import { Link } from "react-router-dom"
 
 const Admin = () => {
+    const [blogs, setBlogs] = useState({
+        "id": 12121,
+        "blogs": {
+            "draft": [
+              
+            ],
+            "published": [
+                
+            ]
+        }  
+    });
+
     return(
         <div className="admin">
             <div className="admin_bar">
@@ -41,7 +55,8 @@ const Admin = () => {
             </div>
             <div className="admin_lists">
                 <div className="admin_lists_column">
-                    <div className="admin_lists_column_box">
+                    
+                    <Link to="/writepage" className="admin_lists_column_box">
                         <div className="admin_lists_column_box_text">
                             Create a blog   
                         </div>
@@ -50,54 +65,49 @@ const Admin = () => {
 
                         </div>
 
-                    </div>
+                    </Link>
 
                 </div>
                 <div className="admin_lists_column">
-                    <div className="admin_lists_column_box">
-                        <div className="admin_lists_column_box_text">
-                            Saved Draft : Drafting about closure
-                        </div>
-                        <div className="admin_lists_column_box_image">
-                            <img src={logoYellow} alt="not found" className="admin_lists_column_box_image_logo" />
 
-                        </div>
-
-                    </div>
-                    <div className="admin_lists_column_box">
-                        <div className="admin_lists_column_box_text">
-                            Saved Draft : Drafting about scope
-                        </div>
-                        <div className="admin_lists_column_box_image">
-                            <img src={logoYellow} alt="not found" className="admin_lists_column_box_image_logo" />
-
-                        </div>
-
-                    </div>
+                    {
+                        blogs.blogs.draft.length > 0 ? 
+                        blogs.blogs.draft.map((v, i) => (
+                            <Link to={`/viewpage/${v.id}`} title={v.name} key={i * (Math.random() * 1000000)} className="admin_lists_column_box">
+                                <div className="admin_lists_column_box_text">
+                                    Saved Draft : {v.name}
+                                </div>
+                                <div className="admin_lists_column_box_image">
+                                    <img src={logoYellow} alt="not found" className="admin_lists_column_box_image_logo" />
+        
+                                </div>
+        
+                            </Link>
+                        )) : ""
+                    }
+                   
+                   
 
                 </div>
                 <div className="admin_lists_column">
-                    <div className="admin_lists_column_box">
-                        <div className="admin_lists_column_box_text">
-                            Published : Fonts & Colors
-                        </div>
-                        <div className="admin_lists_column_box_image">
-                            <img src={logoBlue} alt="not found" className="admin_lists_column_box_image_logo" />
+                    {
+                        blogs.blogs.published.length > 0 ? 
+                        blogs.blogs.published.map((v, i) => (
+                            <Link to={`/viewpage/${v.id}`} title={v.name} key={i * (Math.random() * 1000000)} className="admin_lists_column_box">
+                                <div className="admin_lists_column_box_text">
+                                    Published : {v.name}
+                                </div>
+                                <div className="admin_lists_column_box_image">
+                                    <img src={logoBlue} alt="not found" className="admin_lists_column_box_image_logo" />
+        
+                                </div>
+        
+                            </Link>
+                        )) : ""
+                    }
 
-                        </div>
-
-                    </div>
-                    <div className="admin_lists_column_box">
-                        <div className="admin_lists_column_box_text">
-                            Published : JS overlooked features
-                        </div>
-                        <div className="admin_lists_column_box_image">
-                            <img src={logoBlue} alt="not found" className="admin_lists_column_box_image_logo" />
-
-                        </div>
-
-                    </div>
-
+                   
+                   
                 </div>
 
             </div>
