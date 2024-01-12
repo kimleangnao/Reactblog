@@ -16,6 +16,13 @@ const Writepage =  () => {
     // <span className="underline"> , </span> 
     // <span className="strikethrough"> , </span> 
 
+    //testing
+    const [selecting, setselecting] = useState(false);
+    const {selectionInfo, setselectionInfo} = useState({
+        start: "",
+        end: "",
+        id:""
+    })
 
     const [blog, setblog] = useState({
         id: Math.random() * 1000000,
@@ -41,7 +48,7 @@ const Writepage =  () => {
         e.preventDefault();
 
         let newPar = {
-            id: Math.random() * 1000000,
+            id: Math.floor(Math.random() * 1000000),
             text: "",
             type: "paragraph"
         }
@@ -55,8 +62,13 @@ const Writepage =  () => {
         e.preventDefault();
 
         let newList = {
-            id: Math.random() * 1000000,
-            text: "",
+            id: Math.floor(Math.random() * 1000000),
+            text: [
+                {
+                    id : Math.floor(Math.random() * 1000000),
+                    text: "The floor"
+                }
+            ],
             type: "list"
         }
         let copyBlog = {...blog};
@@ -68,7 +80,7 @@ const Writepage =  () => {
         e.preventDefault();
 
         let newCodeblock = {
-            id: Math.random() * 1000000,
+            id: Math.floor(Math.random() * 1000000),
             text: ``,
             type: "codeblock"
         }
@@ -82,14 +94,125 @@ const Writepage =  () => {
         e.preventDefault();
 
         let newImage = {
-            id: Math.random() * 1000000,
-            text: "",
+            id: Math.floor(Math.random() * 1000000),
+            text: [],
             type: "image"
         }
         let copyBlog = {...blog};
         copyBlog.content.push(newImage);
         setblog(copyBlog);
     }
+
+    //functionality
+    const writingOnParagraph = (e, id) => {
+    
+        //
+        console.log("I AM TYPING!")
+        let copyBlog = {...blog};
+  
+        for(let i = 0; i < copyBlog.content.length; i++){
+            if(id == copyBlog.content[i].id){
+                copyBlog.content[i].text = e.target.value;;
+            }
+        }
+        
+        setblog(copyBlog);
+    }
+
+    const writingList = (e, outerId, index, id) => {
+        e.preventDefault();
+   
+        let copyBlog = {...blog};
+
+        for(let i = 0; i < copyBlog.content.length; i++){
+            if(outerId == copyBlog.content[i].id){
+                if(copyBlog.content[i].text[index].id == id){
+                    copyBlog.content[i].text[index].text = e.target.value;
+                }             
+            }
+        }
+        setblog(copyBlog);
+
+    }
+    const addMoreBulletPointToList = (e, outerId) => {
+        e.preventDefault();
+
+        let createObject =  {
+            id : Math.floor(Math.random() * 1000000),
+            text: ""
+        }
+
+        let copyBlog = {...blog};
+
+        for(let i = 0; i < copyBlog.content.length; i++){
+            if(outerId == copyBlog.content[i].id){
+                copyBlog.content[i].text.push(createObject)       
+            }
+        }
+        console.log(copyBlog);
+        setblog(copyBlog);
+        
+    }
+
+    const writeCodeBlock = (e, outerId) => {
+        e.preventDefault();
+
+        let copyBlog = {...blog};
+
+        for(let i = 0; i < copyBlog.content.length; i++){
+            if(outerId == copyBlog.content[i].id){
+                //   
+                copyBlog.content[i].text = e.target.value;
+                console.log( copyBlog.content[i])
+            }
+        }
+      
+
+        setblog(copyBlog);
+    }
+
+    const uploadingImage = (e, outerId) => {
+        e.preventDefault();
+
+        let copyBlog = {...blog};
+
+        for(let i = 0; i < copyBlog.content.length; i++){
+            if(outerId == copyBlog.content[i].id){
+                //   
+                copyBlog.content[i].text.push(e.target.files[0]);
+                console.log(copyBlog.content[i])
+
+            }
+        }
+  
+        setblog(copyBlog);
+    }
+
+
+    //Editing Tools
+    //testing
+    const selectingText = (e, outerId) => {
+        console.log("I am editing!");
+
+        const targetText = e.target;
+        const startText = targetText.selectionStart;
+        const endText = targetText.selectionEnd;
+        console.log(startText, endText);
+
+        let info = {...selectionInfo};
+        info.start = startText;
+        info.end = endText;
+        info.id = outerId;
+        setselecting(true);
+    }
+    //testing
+    const makeBold = (e) =>{
+        e.preventDefault();
+        
+        console.log("BOLDING");
+    }
+
+
 
 
 
@@ -105,9 +228,9 @@ const Writepage =  () => {
                     Editing tools
                 </p>
                 <div className="writepage_wrapper_tools">
-                    <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_bold">
+                    <button onClick={(e) => makeBold(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_bold">
                         B
-                    </div>
+                    </button>
                     <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_italic">
                         I
                     </div>
@@ -127,7 +250,7 @@ const Writepage =  () => {
                         HL
                     </div>
                     <div role="button" tabIndex={0} onKeyDown={(e) => createCodeBlock(e)} onClick={(e) => createCodeBlock(e)}  className="writepage_wrapper_tools_box">
-                        C
+                        CB
                     </div>
                     <div role="button" tabIndex={0} onKeyDown={(e) => createImage(e)} onClick={(e) => createImage(e)} className="writepage_wrapper_tools_box">
                         Img
@@ -150,10 +273,10 @@ const Writepage =  () => {
                 
                 {
                     blog.content.map((v, i) => (
-                        v.type === "paragraph" ? <WriteParagraph key={i} /> : 
-                        v.type == "list" ? <WriteMakeList key={i} /> : 
-                        v.type == "codeblock" ? <WriteCode key={i} /> : 
-                        v.type == "image" ? <WriteUpload key={i} /> : ""
+                        v.type === "paragraph" ? <WriteParagraph key={i} writingFunction={writingOnParagraph} editingSelect={selectingText} id={v.id} value={v.text} /> : 
+                        v.type == "list" ? <WriteMakeList key={i} writingFunction={writingList} addMoreBulletPoint={addMoreBulletPointToList} id={v.id} value={v.text} /> : 
+                        v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
+                        v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
                     ))
                 }
 

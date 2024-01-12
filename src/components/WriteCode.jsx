@@ -1,16 +1,15 @@
-const functionExample = 
-`function plus(n1, n2){
-       
-    return n1+n2
-}`;
 
-const WriteCode = () => {
+
+const WriteCode = ({writingFunction, value, id,}) => {
+
+
+
     return(
         <div className="writepage_wrapper_code">
             <div className="writepage_wrapper_code_text">
-                <div className="writepage_wrapper_code_text_highlight">
-                {functionExample}
-                </div>
+                <textarea value={value} onChange={(e) => writingFunction(e, id)} className="writepage_wrapper_code_text_highlight">
+                    
+                </textarea>
             </div>
             <div className="writepage_wrapper_code_hold">
                 <div className="writepage_wrapper_code_hold_circle">

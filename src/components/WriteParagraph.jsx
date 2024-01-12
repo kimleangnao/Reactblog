@@ -2,11 +2,18 @@
 
 
 
-const WriteParagraph = () =>{
-    
+const WriteParagraph = ({writingFunction, editingSelect, id, value}) =>{
+
     return(
         <div className="writepage_wrapper_paragraph">
-            <textarea placeholder="Enter text here..." className="writepage_wrapper_paragraph_text" >
+            <textarea 
+                value={value} 
+
+                onChange={(e) => writingFunction(e, id)}
+                onSelect={(e) => editingSelect(e, id)}
+                placeholder="Enter text here..." 
+                className="writepage_wrapper_paragraph_text" 
+            >
 
             </textarea>
             <div className="writepage_wrapper_paragraph_hold">
