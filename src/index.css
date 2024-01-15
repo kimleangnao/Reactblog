@@ -12,6 +12,7 @@
     padding: 0;
     box-sizing: border-box;
     background-color: #4B4A4A;
+   
 }
 
 .navbar{
@@ -23,6 +24,8 @@
     flex-flow: row nowrap;
     justify-content: center;
     align-items: flex-end;
+    z-index: 1;
+    position: relative;
 
     .navbar_index{
         margin: 0 50px;
@@ -87,6 +90,7 @@
 .home{
     font-family: var(--style-font-family);
     color: white;
+  
 
 
     .home_title{
@@ -597,6 +601,10 @@
 .writepage{
     font-family: var(--normal-font-family);
     color: white;
+    position: relative;
+    overflow: hidden;
+
+   
 
     .writepage_bar{
         width: 968.46px;
@@ -616,6 +624,31 @@
         font-family: var(--bold-font-family);
         font-weight: 100;
     }
+    /*absolute*/
+    .writepage_preview{
+        margin: 50px auto;
+        display: block;
+        border: 1px solid red;
+
+
+        .writepage_preview_button{
+            background-color:rgb(69, 110, 199);
+            display: block;
+            width: 200px;
+            height:50px;
+            margin: 0 auto 50px;
+            color: white;
+            font-family: var(--normal-font-family);
+            font-size: 18px;
+            border: unset;
+            border: 2px solid white;
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+
     .writepage_wrapper{
 
         width: 1440px;
@@ -639,11 +672,27 @@
                 margin-right: 2px;
                 text-align: center;
                 line-height: 50px;
+                color: white;
+                font-family: var(--normal-font-family);
+                font-size: 20px;
 
                 &:hover{
                     cursor: pointer;
                 }
             }
+            .writepage_wrapper_tools_box_bold{
+                font-weight: bolder;
+            }
+            .writepage_wrapper_tools_box_italic{
+                font-style: italic;
+            }
+            .writepage_wrapper_tools_box_underline{
+                text-decoration: underline;
+            }
+            .writepage_wrapper_tools_box_crossout{
+                text-decoration: line-through;
+            }
+
         }
         .writepage_wrapper_line{
             width: 100%;
@@ -695,6 +744,7 @@
                 padding: 10px;
                 font-size: 20px;;
                 font-family: var(--normal-font-family);
+                color: black;
             }
             .writepage_wrapper_paragraph_hold{
                 display: block;
@@ -923,6 +973,9 @@
                 text-align: center;
                 line-height: 50px;
                 border-radius: 5px;
+                color: white;
+                font-size: 18px;
+                border: unset;
 
                 &:hover{
                     cursor: pointer;
@@ -934,6 +987,7 @@
         }
 
     }
+
 
 }
 
@@ -1025,7 +1079,6 @@
 }
 
 
-
 .home_ender{
     width: 400px;
     height: 100px;
@@ -1103,3 +1156,12 @@
     }
 }
 
+
+
+
+
+/*modifying*/
+.bold{}
+.italic{}
+.underline{}
+.strikethrough{}

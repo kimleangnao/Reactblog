@@ -5,23 +5,22 @@ import WriteParagraph from "./components/WriteParagraph";
 import WriteUpload from "./components/WriteUpload";
 import WriteMakeList from "./components/WriteMakeList";
 import WriteCode from "./components/WriteCode";
+import DisplayArticle from "./DisplayArticle";
 
 
 
 
 const Writepage =  () => {
 
-    // <span className="Bold"> , </span> 
+    // <span className="bold"> , </span> 
     // <span className="italic"> , </span> 
     // <span className="underline"> , </span> 
     // <span className="strikethrough"> , </span> 
 
     //testing
-    const [selecting, setselecting] = useState(false);
-    const {selectionInfo, setselectionInfo} = useState({
-        start: "",
-        end: "",
-        id:""
+    //const [selecting, setselecting] = useState(true);
+    const [preview, setpreview] = useState(false);
+    const [selectionInfo, setselectionInfo] = useState({
     })
 
     const [blog, setblog] = useState({
@@ -105,9 +104,9 @@ const Writepage =  () => {
 
     //functionality
     const writingOnParagraph = (e, id) => {
-    
-        //
-        console.log("I AM TYPING!")
+        e.preventDefault();
+
+        //console.log("I AM TYPING!")
         let copyBlog = {...blog};
   
         for(let i = 0; i < copyBlog.content.length; i++){
@@ -192,25 +191,69 @@ const Writepage =  () => {
     //Editing Tools
     //testing
     const selectingText = (e, outerId) => {
-        console.log("I am editing!");
-
-        const targetText = e.target;
-        const startText = targetText.selectionStart;
-        const endText = targetText.selectionEnd;
-        console.log(startText, endText);
-
-        let info = {...selectionInfo};
-        info.start = startText;
-        info.end = endText;
-        info.id = outerId;
-        setselecting(true);
+        let info = {};
+        info["start"] = e.target.selectionStart;
+        info["end"] = e.target.selectionEnd;
+        info["id"] = outerId;
+        setselectionInfo(info)  
     }
+
+
     //testing
     const makeBold = (e) =>{
         e.preventDefault();
+
+        if(Object.keys(selectionInfo).length != 0){
+            //make sure it's not empty
+            let info = {...selectionInfo};
+            let id = info.id;
+            let currentBlog = {...blog};
+            let startIndex = Number(info.start);
+            let endIndex = Number(info.end);
+    
+
+            for(let i = 0; i < currentBlog.content.length; i++){
+                if(currentBlog.content[i].id == id){
+                    let arrayText = [...currentBlog.content[i].text.split("")];
         
-        console.log("BOLDING");
+                    arrayText.splice(startIndex, 0, '<<B>>');
+                    arrayText.splice(endIndex +1, 0 , '<</B>>');
+
+                    //console.log(arrayText)
+                    let arrayJoin = arrayText.join("");
+                    currentBlog.content[i].text = arrayJoin;
+                    setblog(currentBlog);
+                }
+            }
+
+            let newInfo = {};
+            setselectionInfo(newInfo);
+        }
+        
     }
+
+    const makeItalic = (e) => {
+        e.preventDefault();
+        if(Object.keys(selectionInfo).length != 0){
+            //make sure it's not empty
+        }
+    }
+
+    const makeUnderline = (e) => {
+        e.preventDefault();
+        if(Object.keys(selectionInfo).length != 0){
+            //make sure it's not empty
+        }
+
+    }
+
+    const makeStrikeThrough = (e) => {
+        e.preventDefault();
+        if(Object.keys(selectionInfo).length != 0){
+            //make sure it's not empty
+        }
+    }
+        
 
 
 
@@ -219,10 +262,15 @@ const Writepage =  () => {
 
     return(
         <div className="writepage">
+           
             <div className="writepage_bar">
                 <img src={bar} alt="not found" className="writepage_bar_img" />
             </div>
             <h1 className="writepage_title"> What is on your mind?...</h1>
+           <div className="writepage_preview">
+                <DisplayArticle />
+                <button className="writepage_preview_button">Back to editing</button>
+           </div>
             <div className="writepage_wrapper">
                 <p className="writepage_wrapper_text">
                     Editing tools
@@ -231,15 +279,15 @@ const Writepage =  () => {
                     <button onClick={(e) => makeBold(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_bold">
                         B
                     </button>
-                    <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_italic">
+                    <button onClick={(e) => makeItalic(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_italic">
                         I
-                    </div>
-                    <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_underline">
+                    </button>
+                    <button onClick={(e) => makeUnderline(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_underline">
                         U
-                    </div>
-                    <div className="writepage_wrapper_tools_box writepage_wrapper_tools_box_crossout">
+                    </button>
+                    <button onClick={(e) => makeStrikeThrough(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_crossout">
                         S
-                    </div>
+                    </button>
                     <div role="button" tabIndex={0} onKeyDown={(e) => createParagraph(e)}  onClick={(e) => createParagraph(e)} className="writepage_wrapper_tools_box">
                         Par
                     </div>
@@ -273,7 +321,14 @@ const Writepage =  () => {
                 
                 {
                     blog.content.map((v, i) => (
-                        v.type === "paragraph" ? <WriteParagraph key={i} writingFunction={writingOnParagraph} editingSelect={selectingText} id={v.id} value={v.text} /> : 
+                        v.type === "paragraph" ? <WriteParagraph 
+                                                                key={i} 
+                                                                writingFunction={writingOnParagraph} 
+                                                                editingSelect={selectingText} 
+                                                                id={v.id} 
+                                                                value={v.text} 
+                                                             
+                                                                /> : 
                         v.type == "list" ? <WriteMakeList key={i} writingFunction={writingList} addMoreBulletPoint={addMoreBulletPointToList} id={v.id} value={v.text} /> : 
                         v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
                         v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
@@ -286,9 +341,9 @@ const Writepage =  () => {
                     <div className="writepage_wrapper_buttons_button">
                         Save to draft
                     </div>
-                    <div className="writepage_wrapper_buttons_button">
+                    <button onClick={() => setpreview(true)} className="writepage_wrapper_buttons_button">
                         Preview
-                    </div>
+                    </button>
                     <div className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_red">
                         Publish
                     </div>
@@ -297,6 +352,7 @@ const Writepage =  () => {
 
 
             </div>
+
         </div>
     )
 }
