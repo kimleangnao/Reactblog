@@ -28,7 +28,8 @@ const Writepage =  () => {
         date: new Date(),
         publishStatus: false,
         inSaveDraft: false,
-        title: "",
+        title: "Default Title",
+        categories: ["HTML", "CSS"],
         content: []
     });
 
@@ -216,8 +217,8 @@ const Writepage =  () => {
                 if(currentBlog.content[i].id == id){
                     let arrayText = [...currentBlog.content[i].text.split("")];
         
-                    arrayText.splice(startIndex, 0, '<<B>>');
-                    arrayText.splice(endIndex +1, 0 , '<</B>>');
+                    arrayText.splice(startIndex, 0, '<<B>> ');
+                    arrayText.splice(endIndex +1, 0 , ' <</B>>');
 
                     //console.log(arrayText)
                     let arrayJoin = arrayText.join("");
@@ -236,6 +237,28 @@ const Writepage =  () => {
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
+            let info = {...selectionInfo};
+            let id = info.id;
+            let currentBlog = {...blog};
+            let startIndex = Number(info.start);
+            let endIndex = Number(info.end);
+
+            for(let i = 0; i < currentBlog.content.length; i++){
+                if(currentBlog.content[i].id == id){
+                    let arrayText = [...currentBlog.content[i].text.split("")];
+        
+                    arrayText.splice(startIndex, 0, '<<I>> ');
+                    arrayText.splice(endIndex +1, 0 , ' <</I>>');
+
+                    //console.log(arrayText)
+                    let arrayJoin = arrayText.join("");
+                    currentBlog.content[i].text = arrayJoin;
+                    setblog(currentBlog);
+                }
+            }
+
+            let newInfo = {};
+            setselectionInfo(newInfo);
         }
     }
 
@@ -243,6 +266,28 @@ const Writepage =  () => {
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
+            let info = {...selectionInfo};
+            let id = info.id;
+            let currentBlog = {...blog};
+            let startIndex = Number(info.start);
+            let endIndex = Number(info.end);
+
+            for(let i = 0; i < currentBlog.content.length; i++){
+                if(currentBlog.content[i].id == id){
+                    let arrayText = [...currentBlog.content[i].text.split("")];
+        
+                    arrayText.splice(startIndex, 0, '<<underline>> ');
+                    arrayText.splice(endIndex +1, 0 , ' <</underline>>');
+
+                    //console.log(arrayText)
+                    let arrayJoin = arrayText.join("");
+                    currentBlog.content[i].text = arrayJoin;
+                    setblog(currentBlog);
+                }
+            }
+
+            let newInfo = {};
+            setselectionInfo(newInfo);
         }
 
     }
@@ -251,6 +296,28 @@ const Writepage =  () => {
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
+            let info = {...selectionInfo};
+            let id = info.id;
+            let currentBlog = {...blog};
+            let startIndex = Number(info.start);
+            let endIndex = Number(info.end);
+
+            for(let i = 0; i < currentBlog.content.length; i++){
+                if(currentBlog.content[i].id == id){
+                    let arrayText = [...currentBlog.content[i].text.split("")];
+        
+                    arrayText.splice(startIndex, 0, '<<st>> ');
+                    arrayText.splice(endIndex +1, 0 , ' <</st>>');
+
+                    //console.log(arrayText)
+                    let arrayJoin = arrayText.join("");
+                    currentBlog.content[i].text = arrayJoin;
+                    setblog(currentBlog);
+                }
+            }
+
+            let newInfo = {};
+            setselectionInfo(newInfo);
         }
     }
         
@@ -267,91 +334,100 @@ const Writepage =  () => {
                 <img src={bar} alt="not found" className="writepage_bar_img" />
             </div>
             <h1 className="writepage_title"> What is on your mind?...</h1>
-           <div className="writepage_preview">
-                <DisplayArticle />
-                <button className="writepage_preview_button">Back to editing</button>
-           </div>
-            <div className="writepage_wrapper">
-                <p className="writepage_wrapper_text">
-                    Editing tools
-                </p>
-                <div className="writepage_wrapper_tools">
-                    <button onClick={(e) => makeBold(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_bold">
-                        B
-                    </button>
-                    <button onClick={(e) => makeItalic(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_italic">
-                        I
-                    </button>
-                    <button onClick={(e) => makeUnderline(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_underline">
-                        U
-                    </button>
-                    <button onClick={(e) => makeStrikeThrough(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_crossout">
-                        S
-                    </button>
-                    <div role="button" tabIndex={0} onKeyDown={(e) => createParagraph(e)}  onClick={(e) => createParagraph(e)} className="writepage_wrapper_tools_box">
-                        Par
-                    </div>
-                    <div role="button" tabIndex={0} onKeyDown={(e) => createList(e)} onClick={(e) => createList(e)} className="writepage_wrapper_tools_box">
-                        List
-                    </div>
-                    <div className="writepage_wrapper_tools_box">
-                        HL
-                    </div>
-                    <div role="button" tabIndex={0} onKeyDown={(e) => createCodeBlock(e)} onClick={(e) => createCodeBlock(e)}  className="writepage_wrapper_tools_box">
-                        CB
-                    </div>
-                    <div role="button" tabIndex={0} onKeyDown={(e) => createImage(e)} onClick={(e) => createImage(e)} className="writepage_wrapper_tools_box">
-                        Img
-                    </div>
+            {
+                preview ?  
+                <div className="writepage_preview">
+                    <DisplayArticle hideBar={true} info={blog} />
+                    <button onClick={() => setpreview(false)} className="writepage_preview_button">Back to editing</button>
                 </div>
-                <div className="writepage_wrapper_line"></div>
-                <div className="writepage_wrapper_title">
-                    <div className="writepage_wrapper_title_text">
-                        Title
+                : 
+                ""
+            }
+           
+           {
+                preview ?  
+                ""
+                : 
+                <div className="writepage_wrapper">
+                    <p className="writepage_wrapper_text">
+                        Editing tools
+                    </p>
+                    <div className="writepage_wrapper_tools">
+                        <button onClick={(e) => makeBold(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_bold">
+                            B
+                        </button>
+                        <button onClick={(e) => makeItalic(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_italic">
+                            I
+                        </button>
+                        <button onClick={(e) => makeUnderline(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_underline">
+                            U
+                        </button>
+                        <button onClick={(e) => makeStrikeThrough(e)} className="writepage_wrapper_tools_box writepage_wrapper_tools_box_crossout">
+                            S
+                        </button>
+                        <div role="button" tabIndex={0} onKeyDown={(e) => createParagraph(e)}  onClick={(e) => createParagraph(e)} className="writepage_wrapper_tools_box">
+                            Par
+                        </div>
+                        <div role="button" tabIndex={0} onKeyDown={(e) => createList(e)} onClick={(e) => createList(e)} className="writepage_wrapper_tools_box">
+                            List
+                        </div>
+                        <div className="writepage_wrapper_tools_box">
+                            HL
+                        </div>
+                        <div role="button" tabIndex={0} onKeyDown={(e) => createCodeBlock(e)} onClick={(e) => createCodeBlock(e)}  className="writepage_wrapper_tools_box">
+                            CB
+                        </div>
+                        <div role="button" tabIndex={0} onKeyDown={(e) => createImage(e)} onClick={(e) => createImage(e)} className="writepage_wrapper_tools_box">
+                            Img
+                        </div>
                     </div>
-                    <input 
-                        type="text" 
-                        name="title" 
-                        placeholder="Write title here..." 
-                        className="writepage_wrapper_title_input"
-                        value={blog.title} 
-                        onChange={(e) => writeTitle(e)} 
-                    />
-                </div>
+                    <div className="writepage_wrapper_line"></div>
+                    <div className="writepage_wrapper_title">
+                        <div className="writepage_wrapper_title_text">
+                            Title
+                        </div>
+                        <input 
+                            type="text" 
+                            name="title" 
+                            placeholder="Write title here..." 
+                            className="writepage_wrapper_title_input"
+                            value={blog.title} 
+                            onChange={(e) => writeTitle(e)} 
+                        />
+                    </div>
+                    
+                    {
+                        blog.content.map((v, i) => (
+                            v.type === "paragraph" ? <WriteParagraph 
+                                                                    key={i} 
+                                                                    writingFunction={writingOnParagraph} 
+                                                                    editingSelect={selectingText} 
+                                                                    id={v.id} 
+                                                                    value={v.text} 
+                                                                
+                                                                    /> : 
+                            v.type == "list" ? <WriteMakeList key={i} writingFunction={writingList} addMoreBulletPoint={addMoreBulletPointToList} id={v.id} value={v.text} /> : 
+                            v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
+                            v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
+                        ))
+                    }
+
                 
-                {
-                    blog.content.map((v, i) => (
-                        v.type === "paragraph" ? <WriteParagraph 
-                                                                key={i} 
-                                                                writingFunction={writingOnParagraph} 
-                                                                editingSelect={selectingText} 
-                                                                id={v.id} 
-                                                                value={v.text} 
-                                                             
-                                                                /> : 
-                        v.type == "list" ? <WriteMakeList key={i} writingFunction={writingList} addMoreBulletPoint={addMoreBulletPointToList} id={v.id} value={v.text} /> : 
-                        v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
-                        v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
-                    ))
-                }
 
-              
-
-                <div className="writepage_wrapper_buttons">
-                    <div className="writepage_wrapper_buttons_button">
-                        Save to draft
-                    </div>
-                    <button onClick={() => setpreview(true)} className="writepage_wrapper_buttons_button">
-                        Preview
-                    </button>
-                    <div className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_red">
-                        Publish
+                    <div className="writepage_wrapper_buttons">
+                        <div className="writepage_wrapper_buttons_button">
+                            Save to draft
+                        </div>
+                        <button onClick={() => setpreview(true)} className="writepage_wrapper_buttons_button">
+                            Preview
+                        </button>
+                        <div className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_red">
+                            Publish
+                        </div>
                     </div>
                 </div>
-
-
-
-            </div>
+            }
+         
 
         </div>
     )

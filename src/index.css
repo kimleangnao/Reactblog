@@ -1037,23 +1037,25 @@
         width: 1300px;
         margin: 10px auto 100px;
         font-family: var(--normal-font-family);
+        font-weight: 200;
         
         .displayArticle_text_paragraph{
             width: 100%;
             font-size: 25px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
         .displayArticle_text_paragraph-first{
             width: 100%;
             font-size: 25px;
             text-indent: 50px;
+            padding-top: 30px;
         }
         .displayArticle_text_list{
             width: 100%;
             min-height: 60px;
             background: #6D6D6D;
             margin: 30px 0;
-            padding: 20px;
+            padding: 30px;
 
             li{
                 background-color: #6D6D6D;
@@ -1161,7 +1163,15 @@
 
 
 /*modifying*/
-.bold{}
-.italic{}
-.underline{}
-.strikethrough{}
+.bold{
+    font-weight: 800;
+}
+.italic{
+    font-style: italic;
+}
+.underline{
+    text-decoration: underline;
+}
+.strikethrough{
+    text-decoration: line-through;
+}
