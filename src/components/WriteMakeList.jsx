@@ -1,7 +1,7 @@
 
 
 
-const WriteMakeList = ({writingFunction, addMoreBulletPoint, id, value}) => {
+const WriteMakeList = ({writingFunction, addMoreBulletPoint, id, value, editingSelect}) => {
 
   
     return(
@@ -14,7 +14,7 @@ const WriteMakeList = ({writingFunction, addMoreBulletPoint, id, value}) => {
                                 <div  className="writepage_wrapper_list_text_input_order">
                                     {i + 1}. 
                                 </div>
-                                <input value={v.text} onChange={(e) => writingFunction(e, id, i, v.id)} type="text" className="writepage_wrapper_list_text_input_text" />
+                                <input value={v.text}  onSelect={(e) => editingSelect(e, id, v.id)}    onChange={(e) => writingFunction(e, id, i, v.id)} type="text" className="writepage_wrapper_list_text_input_text" />
 
                             </div>
                         ))

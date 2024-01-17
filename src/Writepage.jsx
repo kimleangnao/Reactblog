@@ -66,7 +66,7 @@ const Writepage =  () => {
             text: [
                 {
                     id : Math.floor(Math.random() * 1000000),
-                    text: "The floor"
+                    text: ""
                 }
             ],
             type: "list"
@@ -156,6 +156,9 @@ const Writepage =  () => {
 
     const writeCodeBlock = (e, outerId) => {
         e.preventDefault();
+        const textarea = e.target;
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
 
         let copyBlog = {...blog};
 
@@ -191,41 +194,69 @@ const Writepage =  () => {
 
     //Editing Tools
     //testing
-    const selectingText = (e, outerId) => {
+    const selectingText = (e, outerId, insideId) => {
         let info = {};
         info["start"] = e.target.selectionStart;
         info["end"] = e.target.selectionEnd;
         info["id"] = outerId;
+        info["insideId"]= insideId;
+
         setselectionInfo(info)  
     }
 
 
-    //testing
+    //Buttons Action
     const makeBold = (e) =>{
+        //only on paragraph and list
         e.preventDefault();
-
+        console.log("CLick BOLD!")
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
             let info = {...selectionInfo};
             let id = info.id;
+            let insideId = info.insideId;
             let currentBlog = {...blog};
             let startIndex = Number(info.start);
             let endIndex = Number(info.end);
+
+         
+            
+            //console.log(currentBlog);
+            if(insideId != undefined){
+                //
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        for(let insideIndex = 0; insideIndex <  currentBlog.content[i].text.length; insideIndex++){
+                            //
+                            if(currentBlog.content[i].text[insideIndex].id == insideId){
+                                console.log(currentBlog.content[i].text[insideIndex].text)
+                                let arrayText = [...currentBlog.content[i].text[insideIndex].text];
+                                arrayText.splice(startIndex, 0, '<<B>> ');
+                                arrayText.splice(endIndex +1, 0 , ' <</B>>');
+
+                                let arrayJoin = arrayText.join("");
+                                currentBlog.content[i].text[insideIndex].text = arrayJoin;
+                                setblog(currentBlog);
+                            }
+                        }
+                    }
+                }
+            }else{
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        let arrayText = [...currentBlog.content[i].text.split("")];
+                        console.log(arrayText);
+                        arrayText.splice(startIndex, 0, '<<B>> ');
+                        arrayText.splice(endIndex +1, 0 , ' <</B>>');
     
-
-            for(let i = 0; i < currentBlog.content.length; i++){
-                if(currentBlog.content[i].id == id){
-                    let arrayText = [...currentBlog.content[i].text.split("")];
-        
-                    arrayText.splice(startIndex, 0, '<<B>> ');
-                    arrayText.splice(endIndex +1, 0 , ' <</B>>');
-
-                    //console.log(arrayText)
-                    let arrayJoin = arrayText.join("");
-                    currentBlog.content[i].text = arrayJoin;
-                    setblog(currentBlog);
+                        //console.log(arrayText)
+                        let arrayJoin = arrayText.join("");
+                        currentBlog.content[i].text = arrayJoin;
+                        setblog(currentBlog);
+                    }
                 }
             }
+            
 
             let newInfo = {};
             setselectionInfo(newInfo);
@@ -234,28 +265,53 @@ const Writepage =  () => {
     }
 
     const makeItalic = (e) => {
+         //only on paragraph and list
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
             let info = {...selectionInfo};
             let id = info.id;
+            let insideId = info.insideId;
             let currentBlog = {...blog};
             let startIndex = Number(info.start);
             let endIndex = Number(info.end);
 
-            for(let i = 0; i < currentBlog.content.length; i++){
-                if(currentBlog.content[i].id == id){
-                    let arrayText = [...currentBlog.content[i].text.split("")];
-        
-                    arrayText.splice(startIndex, 0, '<<I>> ');
-                    arrayText.splice(endIndex +1, 0 , ' <</I>>');
 
-                    //console.log(arrayText)
-                    let arrayJoin = arrayText.join("");
-                    currentBlog.content[i].text = arrayJoin;
-                    setblog(currentBlog);
+            if(insideId != undefined){
+                //
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        for(let insideIndex = 0; insideIndex <  currentBlog.content[i].text.length; insideIndex++){
+                            //
+                            if(currentBlog.content[i].text[insideIndex].id == insideId){
+                                console.log(currentBlog.content[i].text[insideIndex].text)
+                                let arrayText = [...currentBlog.content[i].text[insideIndex].text];
+                                arrayText.splice(startIndex, 0, '<<I>> ');
+                                arrayText.splice(endIndex +1, 0 , ' <</I>>');
+
+                                let arrayJoin = arrayText.join("");
+                                currentBlog.content[i].text[insideIndex].text = arrayJoin;
+                                setblog(currentBlog);
+                            }
+                        }
+                    }
+                }
+            }else{
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        let arrayText = [...currentBlog.content[i].text.split("")];
+            
+                        arrayText.splice(startIndex, 0, '<<I>> ');
+                        arrayText.splice(endIndex +1, 0 , ' <</I>>');
+    
+                        //console.log(arrayText)
+                        let arrayJoin = arrayText.join("");
+                        currentBlog.content[i].text = arrayJoin;
+                        setblog(currentBlog);
+                    }
                 }
             }
+           
 
             let newInfo = {};
             setselectionInfo(newInfo);
@@ -263,26 +319,50 @@ const Writepage =  () => {
     }
 
     const makeUnderline = (e) => {
+         //only on paragraph and list
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
             let info = {...selectionInfo};
             let id = info.id;
+            let insideId = info.insideId;
             let currentBlog = {...blog};
             let startIndex = Number(info.start);
             let endIndex = Number(info.end);
 
-            for(let i = 0; i < currentBlog.content.length; i++){
-                if(currentBlog.content[i].id == id){
-                    let arrayText = [...currentBlog.content[i].text.split("")];
-        
-                    arrayText.splice(startIndex, 0, '<<underline>> ');
-                    arrayText.splice(endIndex +1, 0 , ' <</underline>>');
 
-                    //console.log(arrayText)
-                    let arrayJoin = arrayText.join("");
-                    currentBlog.content[i].text = arrayJoin;
-                    setblog(currentBlog);
+            if(insideId != undefined){
+                //
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        for(let insideIndex = 0; insideIndex <  currentBlog.content[i].text.length; insideIndex++){
+                            //
+                            if(currentBlog.content[i].text[insideIndex].id == insideId){
+                                console.log(currentBlog.content[i].text[insideIndex].text)
+                                let arrayText = [...currentBlog.content[i].text[insideIndex].text];
+                                arrayText.splice(startIndex, 0, '<<underline>> ');
+                                arrayText.splice(endIndex +1, 0 , ' <</underline>>');
+
+                                let arrayJoin = arrayText.join("");
+                                currentBlog.content[i].text[insideIndex].text = arrayJoin;
+                                setblog(currentBlog);
+                            }
+                        }
+                    }
+                }
+            }else{
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        let arrayText = [...currentBlog.content[i].text.split("")];
+            
+                        arrayText.splice(startIndex, 0, '<<underline>> ');
+                        arrayText.splice(endIndex +1, 0 , ' <</underline>>');
+    
+                        //console.log(arrayText)
+                        let arrayJoin = arrayText.join("");
+                        currentBlog.content[i].text = arrayJoin;
+                        setblog(currentBlog);
+                    }
                 }
             }
 
@@ -293,15 +373,39 @@ const Writepage =  () => {
     }
 
     const makeStrikeThrough = (e) => {
+         //only on paragraph and list
         e.preventDefault();
         if(Object.keys(selectionInfo).length != 0){
             //make sure it's not empty
             let info = {...selectionInfo};
             let id = info.id;
+            let insideId = info.insideId;
             let currentBlog = {...blog};
             let startIndex = Number(info.start);
             let endIndex = Number(info.end);
 
+
+            if(insideId != undefined){
+                //
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        for(let insideIndex = 0; insideIndex <  currentBlog.content[i].text.length; insideIndex++){
+                            //
+                            if(currentBlog.content[i].text[insideIndex].id == insideId){
+                                console.log(currentBlog.content[i].text[insideIndex].text)
+                                let arrayText = [...currentBlog.content[i].text[insideIndex].text];
+                                arrayText.splice(startIndex, 0, '<<st>> ');
+                                arrayText.splice(endIndex +1, 0 , ' <</st>>');
+
+                                let arrayJoin = arrayText.join("");
+                                currentBlog.content[i].text[insideIndex].text = arrayJoin;
+                                setblog(currentBlog);
+                            }
+                        }
+                    }
+                }
+            }else{
+                
             for(let i = 0; i < currentBlog.content.length; i++){
                 if(currentBlog.content[i].id == id){
                     let arrayText = [...currentBlog.content[i].text.split("")];
@@ -315,12 +419,48 @@ const Writepage =  () => {
                     setblog(currentBlog);
                 }
             }
+            }
 
             let newInfo = {};
             setselectionInfo(newInfo);
         }
     }
-        
+    
+    const makeHighlight = (e) => {
+        //highlight only on paragraph, cannot on other places.
+        e.preventDefault();
+        e.preventDefault();
+        if(Object.keys(selectionInfo).length != 0){
+            //make sure it's not empty
+            let info = {...selectionInfo};
+            let id = info.id;
+            let insideId = info.insideId;
+            let currentBlog = {...blog};
+            let startIndex = Number(info.start);
+            let endIndex = Number(info.end);
+
+            console.log("highlight")
+            if(insideId == undefined){
+                //
+                for(let i = 0; i < currentBlog.content.length; i++){
+                    if(currentBlog.content[i].id == id){
+                        let arrayText = [...currentBlog.content[i].text];
+                        arrayText.splice(startIndex, 0, '<<marker>> ');
+                        arrayText.splice(endIndex +1, 0 , ' <</marker>>');
+
+                        let arrayJoin = arrayText.join("");
+                        currentBlog.content[i].text = arrayJoin;
+                        setblog(currentBlog);
+                    }
+                }
+            }
+
+
+            let newInfo = {};
+            setselectionInfo(newInfo);
+        }
+     
+    }
 
 
 
@@ -371,9 +511,9 @@ const Writepage =  () => {
                         <div role="button" tabIndex={0} onKeyDown={(e) => createList(e)} onClick={(e) => createList(e)} className="writepage_wrapper_tools_box">
                             List
                         </div>
-                        <div className="writepage_wrapper_tools_box">
-                            HL
-                        </div>
+                        <button onClick={(e) => makeHighlight(e)} className="writepage_wrapper_tools_box">
+                            Marker
+                        </button>
                         <div role="button" tabIndex={0} onKeyDown={(e) => createCodeBlock(e)} onClick={(e) => createCodeBlock(e)}  className="writepage_wrapper_tools_box">
                             CB
                         </div>
@@ -405,8 +545,14 @@ const Writepage =  () => {
                                                                     id={v.id} 
                                                                     value={v.text} 
                                                                 
-                                                                    /> : 
-                            v.type == "list" ? <WriteMakeList key={i} writingFunction={writingList} addMoreBulletPoint={addMoreBulletPointToList} id={v.id} value={v.text} /> : 
+                                                                /> : 
+                            v.type == "list" ? <WriteMakeList 
+                                                            key={i} writingFunction={writingList} 
+                                                            addMoreBulletPoint={addMoreBulletPointToList} 
+                                                            id={v.id} 
+                                                            value={v.text} 
+                                                            editingSelect={selectingText} 
+                                                        /> : 
                             v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
                             v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
                         ))
