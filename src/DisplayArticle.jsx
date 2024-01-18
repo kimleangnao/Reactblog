@@ -3,15 +3,15 @@
 import SearchBox from "./components/SearchBox";
 
 import image from "./resources/images/pexels-ann-h-1762851.jpg";
-import imageInner from "./resources/images/pexels-aleksandar-pasaric-3280211.jpg";
+
 
 
 const DisplayArticle = ({hideBar, info}) => {
-    console.log(info.content)
+
     const convertToHTML = (text) => {
         let converted = ``;
         let spliText = text.split(" ");
-        console.log(spliText);
+   
         for(let i = 0; i < spliText.length; i++){
             //start
             //bold
@@ -43,7 +43,6 @@ const DisplayArticle = ({hideBar, info}) => {
         }
     
         converted = spliText.join(" ")
-        console.log(converted)
         return converted;
     }
 
@@ -106,7 +105,13 @@ const DisplayArticle = ({hideBar, info}) => {
                    
                         
                         :
-                                     
+                        v.type == "image" ? 
+
+                            <div key={i} className="displayArticle_text_image">
+                                <img src={v.text} alt="not found" className="displayArticle_text_image_inner" />
+                            </div>
+
+                        :
                         ""
                     ))
                 }
@@ -114,15 +119,9 @@ const DisplayArticle = ({hideBar, info}) => {
 
  
             
-                    <ol className="displayArticle_text_list">
-                            <li>Font-family: font-family: 'IBM Plex Mono', monospace;</li>
-                            <li>Font-family: font-family: 'Inter', sans-serif;</li>
-                            <li>Font-family: font-family: 'Roboto', sans-serif;</li>
-                    </ol>
 
-                    <div className="displayArticle_text_image">
-                        <img src={imageInner} alt="not found" className="displayArticle_text_image_inner" />
-                    </div>
+
+                    
 
                */}
                 
