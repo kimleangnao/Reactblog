@@ -28,8 +28,16 @@ const Writepage =  () => {
         date: new Date(),
         publishStatus: false,
         inSaveDraft: false,
-        title: "Default Title",
-        categories: ["HTML", "CSS"],
+        title: "",
+        section: "left",
+        categories: 
+        [
+            {title: "HTML", active: false},
+            {title: "CSS", active: false},
+            {title: "JS", active: false},
+            {title: "ReactJS", active: false},
+            {title: "NodeJS", active: false}
+        ],
         content: []
     });
 
@@ -95,7 +103,7 @@ const Writepage =  () => {
 
         let newImage = {
             id: Math.floor(Math.random() * 1000000),
-            text: [],
+            text: "",
             type: "image"
         }
         let copyBlog = {...blog};
@@ -182,7 +190,7 @@ const Writepage =  () => {
         for(let i = 0; i < copyBlog.content.length; i++){
             if(outerId == copyBlog.content[i].id){
                 //   
-                copyBlog.content[i].text.push(e.target.files[0]);
+                copyBlog.content[i].text = e.target.value;
                 console.log(copyBlog.content[i])
 
             }
@@ -462,6 +470,33 @@ const Writepage =  () => {
      
     }
 
+    const selectCategory = (e, text) => {
+        e.preventDefault();
+        let currentBlog = {...blog};
+        for(let i = 0; i < currentBlog.categories.length; i++){
+            if(currentBlog.categories[i].title == text){
+                currentBlog.categories[i].active = !currentBlog.categories[i].active;
+            }
+        }
+
+        if(text == "HTML" || text == "CSS"){
+            currentBlog.section = "left";
+        }else if (text == "ReactJS" || text == "JS" || text == "NodeJS" ){
+            currentBlog.section = "mid";
+        }else{
+            currentBlog.section = "right";
+        }
+
+        setblog(currentBlog);
+    }
+
+    //funtions
+    const saveDraft = () =>{
+        //save to draft section on database
+    }
+    const publishArticle = () => {
+        //push to publish section on database
+    }
 
 
 
@@ -535,6 +570,21 @@ const Writepage =  () => {
                             onChange={(e) => writeTitle(e)} 
                         />
                     </div>
+                    <div className="writepage_wrapper_category">
+                        {
+                            blog.categories.map((v, i) =>
+                            <button 
+                                key={i} 
+                                className={v.active ? "writepage_wrapper_category_button writepage_wrapper_category_button_selected": "writepage_wrapper_category_button "}
+                                onClick={(e) => selectCategory(e, v.title)}
+                                >
+                                    
+                                    {v.title}
+                            </button>   
+                         )
+                        }                   
+                    </div>   
+              
                     
                     {
                         blog.content.map((v, i) => (
@@ -554,7 +604,7 @@ const Writepage =  () => {
                                                             editingSelect={selectingText} 
                                                         /> : 
                             v.type == "codeblock" ? <WriteCode key={i} writingFunction={writeCodeBlock} id={v.id} value={v.text} /> : 
-                            v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} /> : ""
+                            v.type == "image" ? <WriteUpload key={i} uploadingFunction={uploadingImage} id={v.id} value={v.text} /> : ""
                         ))
                     }
 
