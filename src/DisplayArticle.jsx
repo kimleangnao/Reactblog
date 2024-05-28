@@ -1,12 +1,32 @@
 
 
+import { useEffect, useState } from "react";
 import SearchBox from "./components/SearchBox";
 
 import image from "./resources/images/pexels-ann-h-1762851.jpg";
+import { useParams } from "react-router-dom";
 
 
 
-const DisplayArticle = ({hideBar, info}) => {
+const DisplayArticle = ({hideBar=true, editingPreview=false, infoFromEditing, findWhichArticle}) => {
+    const {id} = useParams();
+
+    const [info, setInfo] = useState(
+        { 
+            "id": "",
+            "date": "",
+            "publishStatus": "",
+            "inSaveDraft": "",
+            "title": "",
+            "section": "",
+            "categories": [
+           
+            ],
+            "content": [
+            
+            ]
+        }
+    )
 
     const convertToHTML = (text) => {
         let converted = ``;
@@ -46,6 +66,26 @@ const DisplayArticle = ({hideBar, info}) => {
         return converted;
     }
 
+    const onGetActiveCategory = (categoryObject) => {
+     
+       if(categoryObject.active){
+            console.log(categoryObject.title)
+            return categoryObject.title
+       }
+    }
+    useEffect(() => {
+        if(editingPreview){
+            setInfo(infoFromEditing)
+        }else{
+            let infoFromFakeDatabase =  findWhichArticle(id)
+            setInfo(infoFromFakeDatabase) ; 
+        }
+        
+
+
+    }, [])
+
+
     return(
         <div className="displayArticle">
             {
@@ -57,12 +97,15 @@ const DisplayArticle = ({hideBar, info}) => {
                 <img src={image} alt="not found" className="displayArticle_image_display" />
             </div>
             <div className="displayArticle_subjects">
-                <div className="displayArticle_subjects_button">
-                    HTML
-                </div>
-                <div className="displayArticle_subjects_button">
-                    CSS
-                </div>
+                {
+                    info.categories.filter((cate) => cate.active == true).map((cate, index) => 
+                        (
+                            <div key={index} className="displayArticle_subjects_button">{cate.title}</div>
+                        )    
+                    )
+                }
+            
+           
             </div>
             <div className="displayArticle_text">
                 {
