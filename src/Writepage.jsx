@@ -6,11 +6,12 @@ import WriteUpload from "./components/WriteUpload";
 import WriteMakeList from "./components/WriteMakeList";
 import WriteCode from "./components/WriteCode";
 import DisplayArticle from "./DisplayArticle";
+import { Link } from "react-router-dom";
 
 
 
 
-const Writepage =  () => {
+const Writepage =  ({saveToDatabase}) => {
 
     // <span className="bold"> , </span> 
     // <span className="italic"> , </span> 
@@ -24,12 +25,12 @@ const Writepage =  () => {
     })
 
     const [blog, setblog] = useState({
-        id: Math.random() * 1000000,
+        id: Math.floor(Math.random() * 1000000),
         date: new Date(),
         publishStatus: false,
         inSaveDraft: false,
         title: "",
-        section: "left",
+        section: "right",
         categories: 
         [
             {title: "HTML", active: false},
@@ -240,7 +241,7 @@ const Writepage =  () => {
                                 console.log(currentBlog.content[i].text[insideIndex].text)
                                 let arrayText = [...currentBlog.content[i].text[insideIndex].text];
                                 arrayText.splice(startIndex, 0, '<<B>> ');
-                                arrayText.splice(endIndex +1, 0 , ' <</B>>');
+                                arrayText.splice(endIndex +1, 0 , ' <</B>> ');
 
                                 let arrayJoin = arrayText.join("");
                                 currentBlog.content[i].text[insideIndex].text = arrayJoin;
@@ -255,7 +256,7 @@ const Writepage =  () => {
                         let arrayText = [...currentBlog.content[i].text.split("")];
                         console.log(arrayText);
                         arrayText.splice(startIndex, 0, '<<B>> ');
-                        arrayText.splice(endIndex +1, 0 , ' <</B>>');
+                        arrayText.splice(endIndex +1, 0 , ' <</B>> ');
     
                         //console.log(arrayText)
                         let arrayJoin = arrayText.join("");
@@ -295,7 +296,7 @@ const Writepage =  () => {
                                 console.log(currentBlog.content[i].text[insideIndex].text)
                                 let arrayText = [...currentBlog.content[i].text[insideIndex].text];
                                 arrayText.splice(startIndex, 0, '<<I>> ');
-                                arrayText.splice(endIndex +1, 0 , ' <</I>>');
+                                arrayText.splice(endIndex +1, 0 , ' <</I>> ');
 
                                 let arrayJoin = arrayText.join("");
                                 currentBlog.content[i].text[insideIndex].text = arrayJoin;
@@ -310,7 +311,7 @@ const Writepage =  () => {
                         let arrayText = [...currentBlog.content[i].text.split("")];
             
                         arrayText.splice(startIndex, 0, '<<I>> ');
-                        arrayText.splice(endIndex +1, 0 , ' <</I>>');
+                        arrayText.splice(endIndex +1, 0 , ' <</I>> ');
     
                         //console.log(arrayText)
                         let arrayJoin = arrayText.join("");
@@ -349,7 +350,7 @@ const Writepage =  () => {
                                 console.log(currentBlog.content[i].text[insideIndex].text)
                                 let arrayText = [...currentBlog.content[i].text[insideIndex].text];
                                 arrayText.splice(startIndex, 0, '<<underline>> ');
-                                arrayText.splice(endIndex +1, 0 , ' <</underline>>');
+                                arrayText.splice(endIndex +1, 0 , ' <</underline>> ');
 
                                 let arrayJoin = arrayText.join("");
                                 currentBlog.content[i].text[insideIndex].text = arrayJoin;
@@ -364,7 +365,7 @@ const Writepage =  () => {
                         let arrayText = [...currentBlog.content[i].text.split("")];
             
                         arrayText.splice(startIndex, 0, '<<underline>> ');
-                        arrayText.splice(endIndex +1, 0 , ' <</underline>>');
+                        arrayText.splice(endIndex +1, 0 , ' <</underline>> ');
     
                         //console.log(arrayText)
                         let arrayJoin = arrayText.join("");
@@ -403,7 +404,7 @@ const Writepage =  () => {
                                 console.log(currentBlog.content[i].text[insideIndex].text)
                                 let arrayText = [...currentBlog.content[i].text[insideIndex].text];
                                 arrayText.splice(startIndex, 0, '<<st>> ');
-                                arrayText.splice(endIndex +1, 0 , ' <</st>>');
+                                arrayText.splice(endIndex +1, 0 , ' <</st>> ');
 
                                 let arrayJoin = arrayText.join("");
                                 currentBlog.content[i].text[insideIndex].text = arrayJoin;
@@ -419,7 +420,7 @@ const Writepage =  () => {
                     let arrayText = [...currentBlog.content[i].text.split("")];
         
                     arrayText.splice(startIndex, 0, '<<st>> ');
-                    arrayText.splice(endIndex +1, 0 , ' <</st>>');
+                    arrayText.splice(endIndex +1, 0 , ' <</st>> ');
 
                     //console.log(arrayText)
                     let arrayJoin = arrayText.join("");
@@ -454,7 +455,7 @@ const Writepage =  () => {
                     if(currentBlog.content[i].id == id){
                         let arrayText = [...currentBlog.content[i].text];
                         arrayText.splice(startIndex, 0, '<<marker>> ');
-                        arrayText.splice(endIndex +1, 0 , ' <</marker>>');
+                        arrayText.splice(endIndex +1, 0 , ' <</marker>> ');
 
                         let arrayJoin = arrayText.join("");
                         currentBlog.content[i].text = arrayJoin;
@@ -484,6 +485,7 @@ const Writepage =  () => {
         }else if (text == "ReactJS" || text == "JS" || text == "NodeJS" ){
             currentBlog.section = "mid";
         }else{
+            //when nothing selected
             currentBlog.section = "right";
         }
 
@@ -512,7 +514,7 @@ const Writepage =  () => {
             {
                 preview ?  
                 <div className="writepage_preview">
-                    <DisplayArticle hideBar={true} info={blog} />
+                    <DisplayArticle hideBar={true} infoFromEditing={blog} editingPreview={true} />
                     <button onClick={() => setpreview(false)} className="writepage_preview_button">Back to editing</button>
                 </div>
                 : 
@@ -611,15 +613,15 @@ const Writepage =  () => {
                 
 
                     <div className="writepage_wrapper_buttons">
-                        <div className="writepage_wrapper_buttons_button">
-                            Save to draft
-                        </div>
+                        <Link to="/" className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_red">
+                            CANCEL
+                        </Link>
                         <button onClick={() => setpreview(true)} className="writepage_wrapper_buttons_button">
                             Preview
                         </button>
-                        <div className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_red">
+                        <Link onClick={() => saveToDatabase(blog)} to={`/`}  className="writepage_wrapper_buttons_button writepage_wrapper_buttons_button_green">
                             Publish
-                        </div>
+                        </Link>
                     </div>
                 </div>
             }

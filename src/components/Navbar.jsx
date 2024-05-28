@@ -11,8 +11,8 @@ const Navbar = () =>{
             <Link to="/about" className="navbar_index">
                 About
             </Link>
-            <Link to="/contact" className="navbar_index">
-                Contact
+            <Link to="/writepage" className="navbar_index">
+                Write
             </Link>
         </div>
     )

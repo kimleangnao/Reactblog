@@ -1006,6 +1006,7 @@
                 color: white;
                 font-size: 18px;
                 border: unset;
+                text-decoration: none;
 
                 &:hover{
                     cursor: pointer;
@@ -1013,6 +1014,9 @@
             }
             .writepage_wrapper_buttons_button_red{
                 background-color: rgb(224, 117, 117);
+            }
+            .writepage_wrapper_buttons_button_green{
+                background-color: rgb(55, 114, 65);
             }
         }
 
@@ -1171,7 +1175,8 @@
 
 .articlecard{
     width: 580px;
-
+    text-decoration: none;
+    color: white;
     margin-bottom: 50px;
     background-color: #3F3F3F;
 
