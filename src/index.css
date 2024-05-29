@@ -105,6 +105,13 @@
         display: flex;
         flex-flow: row nowrap;
     }
+    .home_articles-searched{
+        width: 100%;
+        margin-top: 150px;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+    }
 
     .home_articles{
         width: 100%;
@@ -1179,9 +1186,9 @@
     color: white;
     margin-bottom: 50px;
     background-color: #3F3F3F;
-
     border-radius: 5px;
     font-family: var(--normal-font-family);
+
 
     .articlecard_background{
         margin: 0 auto;
@@ -1206,6 +1213,9 @@
         margin-top: 10px;
         margin-bottom: 20px;
     }
+}
+.articlecard-space{
+    margin: 25px;
 }
 
 

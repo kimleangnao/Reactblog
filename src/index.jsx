@@ -1,6 +1,5 @@
 import {createRoot} from "react-dom/client";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
 /*Component*/
@@ -15,24 +14,16 @@ import DisplayArticle from "./DisplayArticle";
 import { useState } from "react";
 
 
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        },
-    },
-});
-  
 
 
 
 const App = () =>{
     //fake some data
-    let [infos, setInfos] = useState([
+    let [articles, setArticles] = useState([
         { 
             id: 123,
             date: "2024-01-18T18:03:33.064Z",
+            likes: 1000,
             publishStatus: false,
             inSaveDraft: false,
             title: "Embracing the Inherent Goodness: A Celebration of Human Nature",
@@ -110,9 +101,10 @@ const App = () =>{
         { 
             id: 134,
             date: "2024-01-18T18:03:33.064Z",
+            likes: 500,
             publishStatus: false,
             inSaveDraft: false,
-            title: "Embracing the Inherent Goodness: A Celebration of Human Nature",
+            title: "Lorem Ipsum Title",
             section: "mid",
             categories: [
                 {
@@ -188,8 +180,9 @@ const App = () =>{
             id: 145,
             date: "2024-01-18T18:03:33.064Z",
             publishStatus: false,
+            likes: 400,
             inSaveDraft: false,
-            title: "Embracing the Inherent Goodness: A Celebration of Human Nature",
+            title: "Bacon Ipsum Title",
             section: "right",
             categories: [
                 {
@@ -267,22 +260,50 @@ const App = () =>{
     ])
 
     const findWhichArticle = (articleID) => {
-        let info = infos.filter((info) => info.id == articleID)
+        let info = articles.filter((info) => info.id == articleID)
         return info[0];
     }
 
     const saveToDatabase = (info) => {
-        let blogs = [...infos];
+        let blogs = [...articles];
         blogs.push(info);
-        setInfos(blogs);
-        console.log(info)
+        setArticles(blogs);
+     
     }
+
+    const onSearchArticle = (searchText) => {
+     
+        let arrayOfSearchText = searchText.split(" ");
+
+        //go through the saved articles
+        //and save article that match keyword
+        let matchedArticle = [];
+        for(let i = 0; i < articles.length; i++){
+            //break articles title into array and search for key word
+            let articleTitleArray = articles[i].title.split(" ");
+            let lengthOfSearchTextArray =  arrayOfSearchText.length - 1;
+            while(lengthOfSearchTextArray >= 0){
+                for(let j = 0; j < articleTitleArray.length; j++){
+                    if(articleTitleArray[j].toLowerCase() == arrayOfSearchText[lengthOfSearchTextArray].toLowerCase()){
+                        matchedArticle.push(articles[i]);
+                    }
+                }
+                lengthOfSearchTextArray--;
+            }
+        }
+
+        //now rank these matched Article by popularity, highest to lowest
+        let rankedArticle = matchedArticle.sort((a,b) => b.likes - a.likes);
+
+        return rankedArticle;
+    }
+  
 
     return(
         <div>
           
             <BrowserRouter>
-                <QueryClientProvider client={queryClient} >
+          
                     <Navbar />
                     <Routes>
                         <Route path="/login" element={<Login />} />
@@ -291,10 +312,9 @@ const App = () =>{
                         <Route path="/admin" element={<Admin />} />
                         <Route path="/writepage" element={<Writepage saveToDatabase={saveToDatabase} />} />
                         <Route path="/article/:id" element={<DisplayArticle findWhichArticle={findWhichArticle} />} />
-                        <Route path="/" element={<Home infos={infos} />} />
-                      
+                        <Route path="/" element={<Home infos={articles} searchFunction={onSearchArticle} />} />
                     </Routes>
-                </QueryClientProvider>
+          
             </BrowserRouter>
 
         </div>

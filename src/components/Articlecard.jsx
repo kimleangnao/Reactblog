@@ -2,10 +2,10 @@
 import { Link } from "react-router-dom";
 import articlePic from "../resources/images/pexels-ann-h-1762851.jpg";
 
-const Articlecard = ({text}) => {
-    console.log(text)
+const Articlecard = ({searched, text}) => {
+   
     return(
-        <Link to={`/article/${text.id}`} className="articlecard">
+        <Link to={`/article/${text.id}`} className={`articlecard ${searched ? "articlecard-space" : ""}`}>
             <div className="articlecard_background">
                 <img src={articlePic} alt="not found" className="articlecard_background_articlepic" />
             </div>
