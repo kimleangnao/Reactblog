@@ -1,15 +1,23 @@
+import { useState } from "react";
 
 
 
-const SearchBox = () => {
+const SearchBox = ({onChangeSearchField}) => {
+    const [searchField, setSearchField] = useState("")
+
+    const handleSubmit = (e) =>{
+        e.preventDefault();
+        onChangeSearchField(searchField)
+    }
+  
     return(
-        <div className="searchbox">
-            <input type="text" placeholder="Search by title" className="searchbox_text" />
+        <form className="searchbox" onSubmit={(e) => handleSubmit(e)}>
+            <input type="text" onChange={(e) => setSearchField(e.target.value)} value={searchField} placeholder="Search by title" className="searchbox_text" />
 
-            <div className="searchbox_button">
+            <button type="submit" onClick={() => onChangeSearchField(searchField)} className="searchbox_button">
                 <i className="fa-solid fa-magnifying-glass"></i>
-            </div>
-        </div>
+            </button>
+        </form>
     )
 }
 
